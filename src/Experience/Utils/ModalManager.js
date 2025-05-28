@@ -1,4 +1,3 @@
-// src/Utils/ModalManager.js
 export default class ModalManager {
   constructor({ container = document.body } = {}) {
     this.container = container
@@ -6,7 +5,7 @@ export default class ModalManager {
   }
 
   _createModal() {
-    // Overlay
+    // Overlay con blur y sombra
     this.overlay = document.createElement('div')
     Object.assign(this.overlay.style, {
       position: 'fixed',
@@ -14,7 +13,9 @@ export default class ModalManager {
       left: 0,
       width: '100%',
       height: '100%',
-      background: 'rgba(0,0,0,0.5)',
+      background: 'rgba(0, 0, 0, 0.6)',
+      backdropFilter: 'blur(6px)',
+      WebkitBackdropFilter: 'blur(6px)',
       display: 'none',
       alignItems: 'center',
       justifyContent: 'center',
@@ -22,56 +23,69 @@ export default class ModalManager {
     })
     this.container.appendChild(this.overlay)
 
-    // Modal box
+    // Caja del modal con estilo futurista
     this.box = document.createElement('div')
     Object.assign(this.box.style, {
-      background: '#222',
+      background: 'rgba(255, 255, 255, 0.07)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
       color: '#fff',
-      padding: '20px',
-      borderRadius: '8px',
-      maxWidth: '320px',
+      padding: '28px 32px',
+      borderRadius: '20px',
+      maxWidth: '360px',
+      width: '90%',
       textAlign: 'center',
-      position: 'relative'
+      position: 'relative',
+      border: '1px solid rgba(255, 255, 255, 0.15)',
+      boxShadow: '0 0 20px rgba(255, 255, 0, 0.3), inset 0 0 12px rgba(255, 255, 255, 0.05)',
+      fontFamily: "'Orbitron', sans-serif",
+      animation: 'fadeInScale 0.5s ease-out'
     })
     this.overlay.appendChild(this.box)
 
-    // Icon
+    // Icono
     this.icon = document.createElement('div')
     Object.assign(this.icon.style, {
-      fontSize: '32px',
-      marginBottom: '12px'
+      fontSize: '36px',
+      marginBottom: '16px',
+      filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.6))'
     })
     this.box.appendChild(this.icon)
 
-    // Message text
+    // Mensaje
     this.text = document.createElement('div')
     Object.assign(this.text.style, {
-      fontSize: '16px',
-      marginBottom: '16px',
-      whiteSpace: 'pre-line'
+      fontSize: '18px',
+      marginBottom: '20px',
+      whiteSpace: 'pre-line',
+      lineHeight: '1.5',
+      textShadow: '0 0 6px rgba(255, 255, 255, 0.15)'
     })
     this.box.appendChild(this.text)
 
-    // Dynamic buttons container
+    // Contenedor de botones
     this.buttonsContainer = document.createElement('div')
     Object.assign(this.buttonsContainer.style, {
       display: 'flex',
       flexDirection: 'column',
-      gap: '10px',
+      gap: '12px',
       marginBottom: '12px'
     })
     this.box.appendChild(this.buttonsContainer)
 
-    // Close button
+    // Botón de cerrar
     this.closeBtn = document.createElement('button')
     this.closeBtn.innerText = 'Cerrar'
     Object.assign(this.closeBtn.style, {
-      padding: '6px 12px',
+      padding: '10px 20px',
       border: 'none',
-      borderRadius: '4px',
-      background: '#00fff7',
+      borderRadius: '12px',
+      background: 'linear-gradient(90deg, #ffd700, #ffae00)',
       color: '#000',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      fontWeight: 'bold',
+      fontFamily: "'Orbitron', sans-serif",
+      boxShadow: '0 0 12px rgba(255, 204, 0, 0.4)'
     })
     this.closeBtn.onclick = () => this.hide()
     this.box.appendChild(this.closeBtn)
@@ -95,14 +109,19 @@ export default class ModalManager {
           this.hide()
         }
         Object.assign(button.style, {
-          padding: '8px',
-          background: '#00fff7',
+          padding: '12px',
+          background: 'linear-gradient(90deg, #ffe600, #ffae00)',
           color: '#000',
           fontWeight: 'bold',
+          fontFamily: "'Orbitron', sans-serif",
           border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer'
+          borderRadius: '12px',
+          cursor: 'pointer',
+          boxShadow: '0 0 10px rgba(255, 200, 0, 0.5)',
+          transition: 'transform 0.2s ease'
         })
+        button.onmouseover = () => button.style.transform = 'scale(1.05)'
+        button.onmouseout = () => button.style.transform = 'scale(1)'
         this.buttonsContainer.appendChild(button)
       })
       this.closeBtn.style.display = 'none'

@@ -162,25 +162,31 @@ export default class CircularMenu {
     if (this.aboutContainer) return // evita duplicados
 
     this.aboutContainer = document.createElement('div')
-    Object.assign(this.aboutContainer.style, {
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      background: 'rgba(0, 0, 0, 0.95)',
-      padding: '20px',
-      borderRadius: '12px',
-      color: '#fff',
-      zIndex: 10000,
-      textAlign: 'center',
-      fontFamily: 'sans-serif',
-      maxWidth: '300px',
-      boxShadow: '0 0 20px #00fff7'
-    })
+Object.assign(this.aboutContainer.style, {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  padding: '24px 32px',
+  borderRadius: '20px',
+  color: '#fff',
+  zIndex: '10000',
+  textAlign: 'center',
+  fontFamily: "'Orbitron', sans-serif",
+  maxWidth: '320px',
+  width: '90%',
+  background: 'rgba(255, 255, 255, 0.06)',
+  backdropFilter: 'blur(12px)',
+  WebkitBackdropFilter: 'blur(12px)', // Safari support
+  border: '1px solid rgba(255, 255, 255, 0.2)',
+  boxShadow: '0 0 24px rgba(255, 255, 0, 0.3), inset 0 0 12px rgba(255, 255, 0, 0.1)',
+  animation: 'fadeInScale 0.6s ease-out'
+})
+
 
     this.aboutContainer.innerHTML = `
           <h2 style="margin-bottom: 10px;">👨‍💻 Desarrollador</h2>
-          <p style="margin: 0;">Gustavo Sánchez Rodríguez</p>
+          <p style="margin: 0;">SantiiBoop Y el tello</p>
           <p style="margin: 0; font-size: 14px;">Universidad Cooperativa de Colombia</p>
           <p style="margin: 10px 0 0; font-size: 13px;">Proyecto interactivo educativo con Three.js</p>
           <p style="margin: 10px 0 0; font-size: 13px;">guswillsan@gmail.com</p>
