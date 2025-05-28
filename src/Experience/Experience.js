@@ -369,8 +369,7 @@ export default class Experience {
     console.log('♻️ Reiniciando al nivel');
 
     // 💀 Destruir enemigo previo si existe
-    this.world.enemy?.destroy()
-    this.world.enemy = null
+
 
     // Resetear variables de World
     this.world.points = 0;

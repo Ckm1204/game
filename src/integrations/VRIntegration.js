@@ -80,9 +80,7 @@ export default class VRIntegration {
   }
 
   async toggleVR() {
-    if (this.experience?.world?.enemy) {
-      this.experience.world.enemy.delayActivation = 60
-    }
+
 
     if (!navigator.xr) {
       this._showFallback('❌ WebXR no disponible en este navegador.')

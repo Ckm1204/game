@@ -11,7 +11,6 @@ import MobileControls from '../../controls/MobileControls.js'
 import LevelManager from './LevelManager.js';
 import BlockPrefab from './BlockPrefab.js'
 import FinalPrizeParticles from '../Utils/FinalPrizeParticles.js'
-import Enemy from './Enemy.js'
 
 
 export default class World {
@@ -49,19 +48,9 @@ export default class World {
             this.robot = new Robot(this.experience)
 
             // Enemigo: clona un modelo o usa un cubo por ahora
-            const enemyModel = new THREE.Mesh(
-                new THREE.BoxGeometry(1, 1, 1),
-                new THREE.MeshStandardMaterial({ color: 0xff0000 })
-            )
 
-            this.enemy = new Enemy({
-                scene: this.scene,
-                physicsWorld: this.experience.physics.world,
-                playerRef: this.robot,
-                model: enemyModel,
-                position: new THREE.Vector3(10, 1.5, 10),
-                experience: this.experience
-            })
+
+
 
             this.experience.vr.bindCharacter(this.robot)
             this.thirdPersonCamera = new ThirdPersonCamera(this.experience, this.robot.group)
@@ -100,45 +89,11 @@ export default class World {
 
         // 🧟‍♂️ Solo actualizar enemigo si el juego ya comenzó
         if (this.gameStarted) {
-            this.enemy?.update(delta)
+
 
             // 💀 Verificar si el enemigo atrapó al jugador
-            const distToEnemy = (this.enemy?.body?.position && this.robot?.body?.position)
-                ? this.enemy.body.position.distanceTo(this.robot.body.position)
-                : Infinity
 
-            if (distToEnemy < 1.0 && !this.defeatTriggered) {
-                this.defeatTriggered = true  // Previene múltiples disparos
 
-                if (window.userInteracted && this.loseSound) {
-                    this.loseSound.play()
-                }
-
-                const enemyMesh = this.enemy.model || this.enemy.group
-                if (enemyMesh) {
-                    enemyMesh.scale.set(1.3, 1.3, 1.3)
-                    setTimeout(() => {
-                        enemyMesh.scale.set(1, 1, 1)
-                    }, 500)
-                }
-
-                this.experience.modal.show({
-                    icon: '💀',
-                    message: '¡El enemigo te atrapó!\n¿Quieres intentarlo otra vez?',
-                    buttons: [
-                        {
-                            text: '🔁 Reintentar',
-                            onClick: () => this.experience.resetGameToFirstLevel()
-                        },
-                        {
-                            text: '❌ Salir',
-                            onClick: () => this.experience.resetGame()
-                        }
-                    ]
-                })
-
-                return
-            }
         }
 
         if (this.thirdPersonCamera && this.experience.isThirdPerson && !this.experience.renderer.instance.xr.isPresenting) {
@@ -568,9 +523,7 @@ export default class World {
             }
 
             // 🔁 Delay de 3s para que no ataque de inmediato en VR
-            if (this.enemy) {
-                this.enemy.delayActivation = 10.0
-            }
+
 
             // 🧠 Posicionar cámara correctamente
             this.experience.camera.instance.position.set(5, 1.6, 5)
