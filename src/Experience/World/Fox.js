@@ -1,13 +1,17 @@
 import * as THREE from 'three'
-
+import * as CANNON from 'cannon-es'
+import gsap from 'gsap'
 export default class Fox {
-    constructor(experience) {
-        this.experience = experience
+constructor(experience, robot) {
+    this.experience = experience
+    this.robot = robot // 👈 almacenar referencia al robot
         this.scene = this.experience.scene
         this.resources = this.experience.resources
         this.time = this.experience.time
         this.debug = this.experience.debug
-
+        this.setPhysics()
+         this.health = 3
+         this.isDead = false
         // Debug
         if (this.debug.active) {
             this.debugFolder = this.debug.ui.addFolder('fox')
@@ -19,7 +23,24 @@ export default class Fox {
         this.setModel()
         this.setAnimation()
     }
+setPhysics() {
+    const shape = new CANNON.Sphere(0.3)
 
+this.body = new CANNON.Body({
+    mass: 1, // 👈 importante, que no sea 0
+    shape,
+position: new CANNON.Vec3(10, 1, -10),
+
+    linearDamping: 0.1,   // opcional
+    angularDamping: 0.9   // opcional
+})
+
+
+    this.body.collisionFilterGroup = 1
+    this.body.collisionFilterMask = 1
+
+    this.experience.physics.world.addBody(this.body)
+}
     setModel() {
         this.model = this.resource.scene
         this.model.scale.set(0.02, 0.02, 0.02)
@@ -73,8 +94,54 @@ export default class Fox {
             this.debugFolder.add(debugObject, 'playRunning')
         }
     }
+die() {
+    this.isDead = true
+    this.scene.remove(this.model)
+    this.experience.physics.world.removeBody(this.body)
 
-    update() {
-        this.animation.mixer.update(this.time.delta * 0.001)
+    //Opcional: animación de desaparición
+     gsap.to(this.model.scale, { x: 0, y: 0, z: 0, duration: 0.5 })
+
+    console.log('🦊 El zorro ha muerto')
+}
+update() {
+        if (this.isDead) return
+
+    this.animation.mixer.update(this.time.delta * 0.001)
+
+    if (this.body && this.robot?.body) {
+        const foxPos = this.body.position
+        const robotPos = this.robot.body.position
+
+        const direction = new THREE.Vector3(
+            robotPos.x - foxPos.x,
+            0,
+            robotPos.z - foxPos.z
+        ).normalize()
+
+        const speed = 2 // puedes ajustar velocidad
+
+        // Aplicar movimiento
+   const force = new CANNON.Vec3(
+    direction.x * speed,
+    0,
+    direction.z * speed
+)
+this.body.applyForce(force, this.body.position)
+
+        // Animación
+        if (this.animation.actions.current !== this.animation.actions.running) {
+            this.animation.play('running')
+        }
+
+        // Rotar el modelo visual hacia el robot (opcional)
+        const angle = Math.atan2(direction.x, direction.z)
+        this.model.rotation.y = angle
     }
+
+    if (this.body) {
+        this.model.position.copy(this.body.position)
+    }
+}
+ 
 }
