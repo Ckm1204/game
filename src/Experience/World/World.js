@@ -11,6 +11,7 @@ import MobileControls from "../../controls/MobileControls.js";
 import LevelManager from "./LevelManager.js";
 import BlockPrefab from "./BlockPrefab.js";
 import FinalPrizeParticles from "../Utils/FinalPrizeParticles.js";
+import PowerUpStar from "./PowerUpStar.js";
 
 export default class World {
   constructor(experience) {
@@ -44,6 +45,7 @@ export default class World {
 
       this.robot = new Robot(this.experience);
       this.fox = new Fox(this.experience, this.robot)
+this.powerUpStar = new PowerUpStar(this.experience, new THREE.Vector3(-5, 1.5, 20))
 
       this.setupCollisionDetection(); // <--- Agregado aquí
 
@@ -116,7 +118,7 @@ export default class World {
     this.fox?.update();
     this.robot?.update();
     this.blockPrefab?.update();
-
+this.powerUpStar?.update()
     // 🧟‍♂️ Solo actualizar enemigo si el juego ya comenzó
     if (this.gameStarted) {
       // 💀 Verificar si el enemigo atrapó al jugador

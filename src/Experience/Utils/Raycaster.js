@@ -20,6 +20,7 @@ export default class Raycaster {
     }
 
  setEvents() {
+    
     window.addEventListener('click', () => {
         const robot = this.experience.world?.robot
         if (!robot || !robot.group) return
@@ -28,10 +29,11 @@ export default class Raycaster {
         const origin = new THREE.Vector3().copy(robot.group.position)
         origin.y += 1.2 // un poco más alto que el centro
 
-        // Dirección de disparo — basada en la rotación del robot
+// Dirección de disparo — basada en la rotación del robot
 const direction = new THREE.Vector3(0, 0, 1).applyQuaternion(robot.group.quaternion).normalize()
+if (!robot || !robot.group || !robot.canShoot) return;
 
-        this.shootProjectile(origin, direction)
+this.shootProjectile(origin, direction)
     })
 }
 shootProjectile(origin, direction) {
