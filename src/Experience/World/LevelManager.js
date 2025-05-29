@@ -27,7 +27,7 @@ export default class LevelManager {
 
 
     getCurrentLevelTargetPoints() {
-        return this.pointsToComplete?.[this.currentLevel] || 2;
+        return this.pointsToComplete?.[this.currentLevel] || 5;
     }
     
 }

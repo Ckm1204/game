@@ -23,7 +23,7 @@ export default class World {
     this.finalPrizeActivated = false;
     this.gameStarted = false;
     this.coinSound = new Sound("/sounds/coin.ogg");
-    this.ambientSound = new AmbientSound("/sounds/ambiente.mp3");
+    this.ambientSound = new Sound("/sounds/ambiente.mp3");
     this.winner = new Sound("/sounds/winner.mp3");
     this.portalSound = new Sound("/sounds/portal.mp3");
     this.loseSound = new Sound("/sounds/lose.ogg");
@@ -38,7 +38,7 @@ export default class World {
     this.resources.on("ready", async () => {
       this.floor = new Floor(this.experience);
       this.environment = new Environment(this.experience);
-     
+
       this.loader = new ToyCarLoader(this.experience);
       await this.loader.loadFromAPI();
 
@@ -172,7 +172,7 @@ this.powerUpStar?.update()
         prize.collected = true;
 
         if (prize.role === "default") {
-            
+
           this.points = (this.points || 0) + 1;
           this.robot.points = this.points;
           this.experience.menu.setStatus?.(`🎖️ Puntos: ${this.points}`);
@@ -448,6 +448,18 @@ this.experience.physics.world.addEventListener('beginContact', (event) => {
         await this.loader.loadFromURL(apiUrl);
       }
 
+      // Imprimir coordenadas de los premios
+      if (this.loader && this.loader.prizes) {
+        console.log(`🪙 Coordenadas de los premios para el nivel ${level}:`);
+        this.loader.prizes.forEach((prize, index) => {
+          if (prize.pivot && prize.pivot.position) {
+            console.log(
+              `  Premio ${index} (Rol: ${prize.role || 'desconocido'}): X: ${prize.pivot.position.x.toFixed(2)}, Y: ${prize.pivot.position.y.toFixed(2)}, Z: ${prize.pivot.position.z.toFixed(2)}`
+            );
+          }
+        });
+      }
+
       this.loader.prizes.forEach((p) => {
         if (p.model) p.model.visible = p.role !== "finalPrize";
         p.collected = false;
@@ -612,6 +624,18 @@ this.experience.physics.world.addEventListener('beginContact', (event) => {
     const preciseRes = await fetch("/config/precisePhysicsModels.json");
     const preciseModels = await preciseRes.json();
     this.loader._processBlocks(blocks, preciseModels);
+
+    // Imprimir coordenadas de los premios
+    if (this.loader && this.loader.prizes) {
+      console.log("🪙 Coordenadas de los premios (locales):");
+      this.loader.prizes.forEach((prize, index) => {
+        if (prize.pivot && prize.pivot.position) {
+          console.log(
+            `  Premio ${index} (Rol: ${prize.role || 'desconocido'}): X: ${prize.pivot.position.x.toFixed(2)}, Y: ${prize.pivot.position.y.toFixed(2)}, Z: ${prize.pivot.position.z.toFixed(2)}`
+          );
+        }
+      });
+    }
 
     this.loader.prizes.forEach((p) => {
       if (p.model) p.model.visible = p.role !== "finalPrize";

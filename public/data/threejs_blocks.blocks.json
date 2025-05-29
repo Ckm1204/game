@@ -4250,12 +4250,108 @@
   },
   {
     "_id": {
+      "$oid": "6838c3832bf866b0d54abf01"
+    },
+    "name": "coin_structure_detailed_lev2",
+    "x": -33.26,
+    "y": 0.40,
+    "z": 1.67,
+    "level": 1,
+    "role": "default",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6838c3832bf866b0d54abf02"
+    },
+    "name": "coin_structure_detailed_lev2",
+    "x": 3.02,
+    "y": 0.40,
+    "z": -30.28,
+    "level": 1,
+    "role": "default",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6838c3832bf866b0d54abf03"
+    },
+    "name": "coin_structure_detailed_lev2",
+    "x": 49.34,
+    "y": 0.40,
+    "z": 4.17,
+    "level": 1,
+    "role": "default",
+    "__v": 0
+  },
+  {
+    "_id": {
       "$oid": "6838c3832bf866b0d54aac91"
     },
     "name": "coin_structure_diagonal_lev2",
-    "x": -18.190834045410156,
-    "y": 0.9208789467811584,
-    "z": -2.064208745956421,
+    "x": -36.53,
+    "y": 0.40,
+    "z": -40.93,
+    "level": 2,
+    "role": "default",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6838c3832bf866b0d54abf04"
+    },
+    "name": "coin_structure_detailed_lev2",
+    "x": -5.93,
+    "y": 0.40,
+    "z": -17.63,
+    "level": 2,
+    "role": "default",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6838c3832bf866b0d54abf05"
+    },
+    "name": "coin_structure_detailed_lev2",
+    "x": -8.69,
+    "y": 0.40,
+    "z": 2.16,
+    "level": 2,
+    "role": "default",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6838c3832bf866b0d54abf06"
+    },
+    "name": "coin_structure_detailed_lev2",
+    "x": -23.88,
+    "y": 0.40,
+    "z": 51.77,
+    "level": 2,
+    "role": "default",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6838c3832bf866b0d54abf06"
+    },
+    "name": "coin_structure_detailed_lev2",
+    "x": 27.50,
+    "y": 1,
+    "z": 2.20,
+    "level": 2,
+    "role": "default",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6838c3832bf866b0d54abf06"
+    },
+    "name": "coin_structure_detailed_lev2",
+    "x": 11.97,
+    "y": 1,
+    "z": 35.47,
     "level": 2,
     "role": "default",
     "__v": 0

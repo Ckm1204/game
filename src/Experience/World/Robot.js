@@ -23,7 +23,7 @@ export default class Robot {
             if (this.body) {
                 console.log(`🤖 Posición del Robot: x: ${this.body.position.x.toFixed(2)}, y: ${this.body.position.y.toFixed(2)}, z: ${this.body.position.z.toFixed(2)}`);
             }
-        }, 500);
+        }, 2000);
     }
 
     setModel() {
