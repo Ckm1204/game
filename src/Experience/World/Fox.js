@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-
+import * as CANNON from 'cannon-es'
 export default class Fox {
     constructor(experience) {
         this.experience = experience
@@ -7,6 +7,7 @@ export default class Fox {
         this.resources = this.experience.resources
         this.time = this.experience.time
         this.debug = this.experience.debug
+        this.setPhysics()
 
         // Debug
         if (this.debug.active) {
@@ -19,7 +20,20 @@ export default class Fox {
         this.setModel()
         this.setAnimation()
     }
+setPhysics() {
+    const shape = new CANNON.Sphere(0.3)
 
+    this.body = new CANNON.Body({
+        mass: 0, // Estático
+        shape,
+        position: new CANNON.Vec3(3, 0.3, 0),
+    })
+
+    this.body.collisionFilterGroup = 1
+    this.body.collisionFilterMask = 1
+
+    this.experience.physics.world.addBody(this.body)
+}
     setModel() {
         this.model = this.resource.scene
         this.model.scale.set(0.02, 0.02, 0.02)
@@ -75,6 +89,10 @@ export default class Fox {
     }
 
     update() {
-        this.animation.mixer.update(this.time.delta * 0.001)
+    this.animation.mixer.update(this.time.delta * 0.001)
+
+    if (this.body) {
+        this.model.position.copy(this.body.position)
     }
+}    
 }

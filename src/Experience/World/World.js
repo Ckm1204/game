@@ -35,7 +35,6 @@ export default class World {
     }, 2000);
 
     this.resources.on("ready", async () => {
-        
       this.floor = new Floor(this.experience);
       this.environment = new Environment(this.experience);
 
@@ -45,7 +44,7 @@ export default class World {
       this.fox = new Fox(this.experience);
       this.robot = new Robot(this.experience);
 
-      // Enemigo: clona un modelo o usa un cubo por ahora
+      this.setupCollisionDetection(); // <--- Agregado aquí
 
       this.experience.vr.bindCharacter(this.robot);
       this.thirdPersonCamera = new ThirdPersonCamera(
@@ -75,7 +74,6 @@ export default class World {
         return;
       }
 
-      // Si se está en modo VR, ocultar el robot
       this._checkVRMode();
 
       this.experience.renderer.instance.xr.addEventListener(
@@ -84,6 +82,28 @@ export default class World {
           this._checkVRMode();
         }
       );
+    });
+  }
+
+  setupCollisionDetection() {
+    this.experience.physics.world.addEventListener("beginContact", (event) => {
+      const { bodyA, bodyB } = event;
+
+      if (!this.robot || !this.fox || !this.robot.body || !this.fox.body) return;
+
+      const robotBodyId = this.robot.body.id;
+      const foxBodyId = this.fox.body.id;
+
+      const ids = [bodyA.id, bodyB.id];
+
+      console.log(`💥 Contacto detectado entre ${bodyA.id} y ${bodyB.id}`);
+      console.log(`🤖 Esperado robot ID: ${robotBodyId}`);
+      console.log(`🦊 Esperado fox ID: ${foxBodyId}`);
+
+      if (ids.includes(robotBodyId) && ids.includes(foxBodyId)) {
+        console.log("☠️ Robot tocó al zorro");
+        this.robot.die();
+      }
     });
   }
 
@@ -387,7 +407,22 @@ export default class World {
           spawnPoint: { x: -17, y: 1.5, z: -67 }, // valor por defecto si no viene en JSON
         };
       }
+this.experience.physics.world.addEventListener('beginContact', (event) => {
+    const bodyA = event.bodyA
+    const bodyB = event.bodyB
 
+    if (!this.robot || !this.fox || !this.robot.body || !this.fox.body) return
+
+    const robotBodyId = this.robot.body.id
+    const foxBodyId = this.fox.body.id
+
+    const ids = [bodyA.id, bodyB.id]
+
+    if (ids.includes(robotBodyId) && ids.includes(foxBodyId)) {
+        console.log('☠️ Robot tocó al zorro')
+        this.robot.die()
+    }
+})
       const spawnPoint = data.spawnPoint || { x: 5, y: 1.5, z: 5 };
       this.points = 0;
       this.robot.points = 0;
