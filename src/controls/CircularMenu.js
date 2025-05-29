@@ -178,10 +178,9 @@ export default class CircularMenu {
 
     this.aboutContainer.innerHTML = `
       <h2 style="margin-bottom: 10px;">👨‍💻 Desarrollador</h2>
-      <p>SantiiBoop Y el tello</p>
+      <p>SantiiBoop Y el Tello</p>
       <p style="font-size: 14px;">Universidad Cooperativa de Colombia</p>
       <p style="font-size: 13px;">Proyecto interactivo educativo con Three.js</p>
-      <p style="font-size: 13px;">guswillsan@gmail.com</p>
       <button style="margin-top: 12px; padding: 6px 14px; font-size: 14px; background: #00fff7; color: black; border: none; border-radius: 6px; cursor: pointer;">Cerrar</button>`
 
     const closeBtn = this.aboutContainer.querySelector('button')
