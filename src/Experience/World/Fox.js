@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import * as CANNON from 'cannon-es'
+import gsap from 'gsap'
 export default class Fox {
 constructor(experience, robot) {
     this.experience = experience
@@ -9,7 +10,8 @@ constructor(experience, robot) {
         this.time = this.experience.time
         this.debug = this.experience.debug
         this.setPhysics()
-
+         this.health = 3
+         this.isDead = false
         // Debug
         if (this.debug.active) {
             this.debugFolder = this.debug.ui.addFolder('fox')
@@ -92,8 +94,19 @@ position: new CANNON.Vec3(10, 1, -10),
             this.debugFolder.add(debugObject, 'playRunning')
         }
     }
+die() {
+    this.isDead = true
+    this.scene.remove(this.model)
+    this.experience.physics.world.removeBody(this.body)
 
+    //Opcional: animación de desaparición
+     gsap.to(this.model.scale, { x: 0, y: 0, z: 0, duration: 0.5 })
+
+    console.log('🦊 El zorro ha muerto')
+}
 update() {
+        if (this.isDead) return
+
     this.animation.mixer.update(this.time.delta * 0.001)
 
     if (this.body && this.robot?.body) {

@@ -37,7 +37,7 @@ export default class World {
     this.resources.on("ready", async () => {
       this.floor = new Floor(this.experience);
       this.environment = new Environment(this.experience);
-
+     
       this.loader = new ToyCarLoader(this.experience);
       await this.loader.loadFromAPI();
 

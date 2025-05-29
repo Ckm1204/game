@@ -35,6 +35,7 @@ const direction = new THREE.Vector3(0, 0, 1).applyQuaternion(robot.group.quatern
     })
 }
 shootProjectile(origin, direction) {
+    const fox = this.experience.world.fox // Asegúrate de tenerlo referenciado
     const radius = 0.2
     const geometry = new THREE.SphereGeometry(radius, 16, 16)
     const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
@@ -51,23 +52,37 @@ shootProjectile(origin, direction) {
         material: this.physics.defaultMaterial
     })
 
-    // Aplica una fuerza en la dirección dada
     const shootForce = 15
     const impulse = new CANNON.Vec3(direction.x * shootForce, direction.y * shootForce, direction.z * shootForce)
     body.applyImpulse(impulse, body.position)
 
     this.physics.world.addBody(body)
+const tick = () => {
+    mesh.position.copy(body.position)
+    mesh.quaternion.copy(body.quaternion)
 
-    const tick = () => {
-        mesh.position.copy(body.position)
-        mesh.quaternion.copy(body.quaternion)
+    if (fox && fox.body && !fox.isDead) {
+        const distance = body.position.distanceTo(fox.body.position)
+        console.log('📏 Distancia con el zorro:', distance.toFixed(2)) // 👈 Agrega esto
+
+       if (distance < 1.5) {
+            fox.health -= 1
+            console.log('🦊 Fox hit! Health:', fox.health)
+
+            if (fox.health <= 0) {
+                fox.die()
+            }
+
+            this._removeObstacle(bullet)
+        }
     }
+}
+
     this.experience.time.on('tick', tick)
 
     const bullet = { mesh, body, tick }
     this.spawnedObstacles.push(bullet)
 
-    // Remover después de cierto tiempo
     setTimeout(() => this._removeObstacle(bullet), 4000)
 }
 
