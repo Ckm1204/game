@@ -27,6 +27,7 @@ export default class World {
     this.winner = new Sound("/sounds/winner.mp3");
     this.portalSound = new Sound("/sounds/portal.mp3");
     this.loseSound = new Sound("/sounds/lose.ogg");
+this.finalModalShown = false;
 
     this.allowPrizePickup = false;
     this.hasMoved = false;
@@ -176,7 +177,27 @@ this.powerUpStar?.update()
           this.points = (this.points || 0) + 1;
           this.robot.points = this.points;
           this.experience.menu.setStatus?.(`🎖️ Puntos: ${this.points}`);
+  if (
+    this.levelManager.currentLevel === 2 &&
+    this.points >= 5 &&
+    !this.finalModalShown
+  ) {
+    this.finalModalShown = true;
 
+    const elapsed = this.experience.tracker.stop();
+    this.experience.tracker.saveTime(elapsed);
+    this.experience.tracker.showEndGameModal(elapsed);
+
+    this.experience.obstacleWavesDisabled = true;
+    clearTimeout(this.experience.obstacleWaveTimeout);
+    this.experience.raycaster?.removeAllObstacles();
+
+    if (window.userInteracted) {
+      this.winner.play();
+    }
+
+    console.log("✅ Modal de fin de juego mostrado en nivel 2 con 5 puntos.");
+  }
           const pointsTarget = this.levelManager.getCurrentLevelTargetPoints();
           console.log(
             `🎯 Monedas recolectadas: ${this.points} / ${pointsTarget}`
