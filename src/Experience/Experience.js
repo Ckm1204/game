@@ -42,7 +42,8 @@ export default class Experience {
     this.debugger = cannonDebugger(this.scene, this.physics.world, { color: 0x00ff00 })
     this.keyboard = new KeyboardControls()
 
-    this.scene.background = new THREE.Color('#87ceeb')
+this.scene.background = new THREE.Color("#14213d");
+
 
     // Recursos
     this.resources = new Resources(sources)
