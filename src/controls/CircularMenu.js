@@ -133,7 +133,7 @@ export default class CircularMenu {
 
     this.playersLabel = document.createElement('div')
     this.playersLabel.id = 'hud-players'
-    this.playersLabel.innerText = '👥 Jugadores: 1'
+    this.playersLabel.innerText = '👥 Jugadores: 1/5'
     Object.assign(this.playersLabel.style, {
       position: 'fixed',
       top: '16px',

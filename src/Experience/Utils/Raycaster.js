@@ -19,25 +19,58 @@ export default class Raycaster {
         this.setEvents()
     }
 
-    setEvents() {
-        window.addEventListener('click', (event) => {
-            this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1
-            this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1
+ setEvents() {
+    window.addEventListener('click', () => {
+        const robot = this.experience.world?.robot
+        if (!robot || !robot.group) return
 
-            this.raycaster.setFromCamera(this.pointer, this.camera)
-            const floorMesh = this.experience.world?.floor?.mesh
-            if (!floorMesh) return
+        // Posición de origen del disparo (justo al frente del robot)
+        const origin = new THREE.Vector3().copy(robot.group.position)
+        origin.y += 1.2 // un poco más alto que el centro
 
-            const intersects = this.raycaster.intersectObject(floorMesh)
+        // Dirección de disparo — basada en la rotación del robot
+const direction = new THREE.Vector3(0, 0, 1).applyQuaternion(robot.group.quaternion).normalize()
 
+        this.shootProjectile(origin, direction)
+    })
+}
+shootProjectile(origin, direction) {
+    const radius = 0.2
+    const geometry = new THREE.SphereGeometry(radius, 16, 16)
+    const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
+    const mesh = new THREE.Mesh(geometry, material)
+    mesh.castShadow = true
+    mesh.position.copy(origin)
+    this.scene.add(mesh)
 
-            if (intersects.length > 0) {
-                const point = intersects[0].point
-                //console.log('🟢 Punto seleccionado:', point)
-                this.placeObject(point)
-            }
-        })
+    const shape = new CANNON.Sphere(radius)
+    const body = new CANNON.Body({
+        mass: 0.5,
+        shape,
+        position: new CANNON.Vec3(origin.x, origin.y, origin.z),
+        material: this.physics.defaultMaterial
+    })
+
+    // Aplica una fuerza en la dirección dada
+    const shootForce = 15
+    const impulse = new CANNON.Vec3(direction.x * shootForce, direction.y * shootForce, direction.z * shootForce)
+    body.applyImpulse(impulse, body.position)
+
+    this.physics.world.addBody(body)
+
+    const tick = () => {
+        mesh.position.copy(body.position)
+        mesh.quaternion.copy(body.quaternion)
     }
+    this.experience.time.on('tick', tick)
+
+    const bullet = { mesh, body, tick }
+    this.spawnedObstacles.push(bullet)
+
+    // Remover después de cierto tiempo
+    setTimeout(() => this._removeObstacle(bullet), 4000)
+}
+
 
     placeObject(position) {
         //this._createObstacle(position.x, 1, position.z)
