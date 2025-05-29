@@ -118,6 +118,14 @@ this.powerUpStar = new PowerUpStar(this.experience, new THREE.Vector3(-5, 1.5, 2
     this.fox?.update();
     this.robot?.update();
     this.blockPrefab?.update();
+    this.timeSinceLastLog += delta;
+
+    // Imprimir la posición del robot si existe y ha pasado el intervalo
+    if (this.robot && this.robot.body && this.timeSinceLastLog >= this.logInterval) {
+      console.log('Posición del robot:', this.robot.body.position);
+      this.timeSinceLastLog = 0; // Reiniciar el contador
+    }
+
 this.powerUpStar?.update()
     // 🧟‍♂️ Solo actualizar enemigo si el juego ya comenzó
     if (this.gameStarted) {
