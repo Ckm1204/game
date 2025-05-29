@@ -41,8 +41,9 @@ export default class World {
       this.loader = new ToyCarLoader(this.experience);
       await this.loader.loadFromAPI();
 
-      this.fox = new Fox(this.experience);
+
       this.robot = new Robot(this.experience);
+      this.fox = new Fox(this.experience, this.robot)
 
       this.setupCollisionDetection(); // <--- Agregado aquí
 
