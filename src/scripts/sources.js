@@ -1,36 +1,3 @@
-export default [
-    {
-        name: 'environmentMapTexture',
-        type: 'cubeTexture',
-        path: [
-            '/textures/environmentMap/px.jpg',
-            '/textures/environmentMap/nx.jpg',
-            '/textures/environmentMap/py.jpg',
-            '/textures/environmentMap/ny.jpg',
-            '/textures/environmentMap/pz.jpg',
-            '/textures/environmentMap/nz.jpg'
-        ]
-    },
-    {
-        name: 'grassColorTexture',
-        type: 'texture',
-        path: '/textures/dirt/color.jpg'
-    },
-    {
-        name: 'grassNormalTexture',
-        type: 'texture',
-        path: '/textures/dirt/normal.jpg'
-    },
-    {
-        name: 'foxModel',
-        type: 'gltfModel',
-        path: '/models/Fox/glTF/Fox.gltf'
-    },
-    {
-        name: 'robotModel',
-        type: 'gltfModel',
-        path: '/models/Robot/Robot.glb'
-    },
     {
         "name": "0202worlddesertinvisiblewall_worlddesertinvisiblewallmaterial_0",
         "type": "gltfModel",
@@ -2616,5 +2583,4 @@ export default [
         "type": "gltfModel",
         "path": "/models/toycar/tree_1_plam_4_trunk_0_lev2.glb"
     }
-]
-
+];

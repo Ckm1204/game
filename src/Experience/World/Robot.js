@@ -17,6 +17,13 @@ export default class Robot {
         this.setSounds()
         this.setPhysics()
         this.setAnimation()
+
+        // Imprimir la posición del robot cada 2 segundos
+        setInterval(() => {
+            if (this.body) {
+                console.log(`🤖 Posición del Robot: x: ${this.body.position.x.toFixed(2)}, y: ${this.body.position.y.toFixed(2)}, z: ${this.body.position.z.toFixed(2)}`);
+            }
+        }, 500);
     }
 
     setModel() {
@@ -232,7 +239,7 @@ export default class Robot {
             this.walkSound.stop()
 
             // 💥 Eliminar cuerpo del mundo para evitar errores
-            if (this.physics.world.bodies.includes(this.body)) {
+            if (this.body && this.physics.world.bodies.includes(this.body)) { // Añadida comprobación de this.body
                 this.physics.world.removeBody(this.body)
             }
             this.body = null  // prevenir referencias rotas
@@ -244,7 +251,4 @@ export default class Robot {
             console.log('☠️ Robot ha muerto')
         }
     }
-
-
-
 }
